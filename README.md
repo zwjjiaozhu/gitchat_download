@@ -30,9 +30,8 @@ gitchat文章下载器，支持下载pdf格式以及markdown格式。
 ##### 1.1.2课程下载
 
 
-课程链接是课程主页的链接：
+课程链接是课程主页的链接：以一个免费的课程为例：
 
-以一个免费的课程为例：
 ![03.png](https://upload-images.jianshu.io/upload_images/8828874-340200a574419a5e.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
 
 点击进去主页然后复制链接https://gitbook.cn/gitchat/column/59f7e38160c9361563ebea95
