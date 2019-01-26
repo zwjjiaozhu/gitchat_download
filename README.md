@@ -54,6 +54,10 @@ pdf格式：
 markdown格式：
 ![06.png](https://upload-images.jianshu.io/upload_images/8828874-a49e2cd57f7974ed.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
 
+#### 软件下载
+
+地址：![下载](https://github.com/jz46/gitchat_download/tree/master/setup)
+
 
 > 总结：
 
