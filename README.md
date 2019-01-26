@@ -5,6 +5,10 @@ gitchat文章下载器，支持下载pdf格式以及markdown格式。
 
 其中支持免费的课程下载，付费的课程需要自己购买后，在软件添加cookie后才可以下载
 
+#### 软件架构
+- python爬虫技术
+- wxpython GUI开发界面
+- aria2 开源下载利器
 
 
 ##### 1.1添加cookie
