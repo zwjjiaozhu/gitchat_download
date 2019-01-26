@@ -7,11 +7,11 @@ gitchat文章下载器，支持下载pdf格式以及markdown格式。
 
 
 
-#### 1.1设置cookie
+##### 1.1添加cookie
 
 请在使用本软件之前，请先添加自己gitchat账户的cookie信息，如过不添加的话，一些免费的课程也下载不了，只可以下载那些试读的课程。
 
-##### 1.1.1添加cookie
+###### 1.1.1添加cookie
 
 到浏览器使用微信登录自己的gitchat账户，然后打开谷歌浏览器的控制台（其他用谷歌内核的浏览器的也是一样的方法：qq、360、百度浏览器），操作看下方的图片：
 
@@ -36,4 +36,23 @@ gitchat文章下载器，支持下载pdf格式以及markdown格式。
 ![04.png](https://upload-images.jianshu.io/upload_images/8828874-e7cb71f74dcd2ffd.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
 
 一定要注意，如果链接错了的话，课程是下载不了的。而且自己要提前手动的点击学习课程以及购买课程，才可以下载成功。
+
+#####1.2下载课程
+
+复制好课程主页链接，然后开始下载。
+
+![download.gif](https://upload-images.jianshu.io/upload_images/8828874-d8e4f7047677e814.gif?imageMogr2/auto-orient/strip)
+下载后的内容和原格式相差不多。
+
+pdf格式：
+![05.png](https://upload-images.jianshu.io/upload_images/8828874-c22f3cdf0404a1e9.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+
+markdown格式：
+![06.png](https://upload-images.jianshu.io/upload_images/8828874-a49e2cd57f7974ed.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+
+
+> 总结：
+
+还是有很多要优化的地方
+
 
