@@ -55,7 +55,7 @@ markdown格式：
 
 #### 2.0软件下载
 
-地址：![软件下载](https://github.com/jz46/gitchat_download/tree/master/setup)
+地址：[软件下载](https://github.com/jz46/gitchat_download/tree/master/setup)
 
 
 > 总结：
