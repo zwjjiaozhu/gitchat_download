@@ -2,7 +2,7 @@ import wx
 import os
 from threading import Thread
 # import wx.lib.pubsub.pub
-from pubsub import pub
+from wx.lib.pubsub import pub
 from bs4 import BeautifulSoup
 import html2text
 from lxml import etree
@@ -11,7 +11,9 @@ import webbrowser
 import json
 import wx.html
 import re
-import win32api
+import pdfkit
+import time
+# import win32api
 headers = {
     # 'User-Agent': "Mozilla/5.0 (iPhone; CPU iPhone OS 11_0 like Mac OS X) AppleWebKit/604.1.38 (KHTML, like Gecko) Version/11.0 Mobile/15A372 Safari/604.1",
     'User-Agent': "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36",
@@ -19,16 +21,13 @@ headers = {
 }
 
 
-class TestThread:
+class ChatDown:
     def __init__(self, login_url, dir_path, is_choice):
         # 线程实例化时立即启动
         # self.thread = thread
         self.login_url = login_url
         self.dir_path = dir_path
         self.is_choice = is_choice
-        # Thread.__init__(self)
-        # self.start()
-        # print(login_url, dir_path)
         self.run()
 
     def run(self):
@@ -43,18 +42,23 @@ class TestThread:
 
         r = requests.get(self.login_url, cookies=self.cookies, headers=headers).content
         content = etree.HTML(r)
-        article_list = content.xpath('//div[ @class="catalog_view"]/a/@onclick')
+        article_list = content.xpath('//div[ @class="column_categorys"]/a/@onclick')
+        chapter_name_list = content.xpath('//div[@class="column_categorys"]/a/div[2]/div/h2/text()')
         if not article_list:  # 恶心的是，有的时候链接是在div下的，一般是a标签下例如：https://gitbook.cn/gitchat/column/5b6d05446b66e3442a2bfa7b
-            article_list = content.xpath('//div[ @class="catalog_view"]/div/@onclick')
+            article_list = content.xpath('//div[@class="column_categorys"]/div/@onclick')
+        if not chapter_name_list:  # 恶心的是，有的时候链接是在div下的，一般是a标签下例如：https://gitbook.cn/gitchat/column/5b6d05446b66e3442a2bfa7b
+            chapter_name_list = content.xpath('//div[@class="column_categorys"]/div/div[2]/div/h2/text()')
 
-        self.chapter_title = content.xpath('//div[@class="catalog_items_head"]/a/text()')[0]  # 获取课程名称
+        self.chapter_title = content.xpath('//div[@class="column_infos"]/div/h1/text()')[0]  # 获取课程名称
         self.dir_path_title = self.dir_path + self.chapter_title  # 生成课程的根目录
+        self.chapter_title = self.format_name(self.chapter_title)
         if not os.path.exists(self.dir_path_title):
             os.makedirs(self.dir_path_title)
         # u1 = self.login_url.split('/')[-1]  # 拼接每个章节url
         for u in article_list:
             # u2 = re.findall('clickOnTopic\(\'(.+)\'', u)[0]
-            url_info = re.findall(r"clickOnTopic\(\'(?P<blog>.+)\',\'(?P<directory>.+)\',\'(?P<is_free>.+)\',\'(?P<is_done>.+)\'\)", u)[0]
+            url_info = re.findall(
+                r"clickOnTopic\(\'(?P<blog>.+)\',\'(?P<directory>.+)\',\'(?P<is_free>.+)\',\'(?P<is_done>.+)\'\)", u)[0]
             a_url = 'https://gitbook.cn/gitchat/column/' + url_info[1] + '/topic/' + url_info[0]
             print(a_url)
             wx.CallAfter(pub.sendMessage, "update", message=a_url + '\n')
@@ -85,10 +89,12 @@ class TestThread:
         # print(r)
 
         soup = BeautifulSoup(r, 'lxml')
-        content = soup.find_all('div', class_='topicContainer')
+        content = soup.find_all('div', class_='topic_content')
+        # print(f"{content}")
+        # time.sleep(20)
         if content:
             content = content[0]
-            html_code = str(content.contents[0])
+            html_code = str(content)
 
             title = str(soup.title.string).replace(' ', '').replace('|', '-')
             # print(title)
@@ -105,14 +111,14 @@ class TestThread:
         """html代码转markdown"""
         ht = html2text.HTML2Text()
         htmlpage = txt
-        text = html2text.html2text(htmlpage).encode('utf8')
+        text = html2text.html2text(htmlpage)
         # print(text)
         try:
             if os.path.exists(self.dir_path_md + '/' + title + '.md'):       # 判断文件是否存在
                 success_already = '*** %s ***已存在、markdown格式下载完毕' % title
                 wx.CallAfter(pub.sendMessage, "update", message=success_already + '\n')
             else:
-                with open(self.dir_path_md + '/' + title + '.md', 'wb') as f:
+                with open(self.dir_path_md + '/' + title + '.md', 'w', encoding='utf8') as f:
                     f.write(text)
                     success_message = '*** %s ***、markdown下载完毕' % title
                     wx.CallAfter(pub.sendMessage, "update", message=success_message + '\n')
@@ -149,6 +155,37 @@ class TestThread:
         else:
             error_down = '***%s ***不支持PDF下载或者下载出错了或者购买后在下载！' % title
             wx.CallAfter(pub.sendMessage, "update", message=error_down + '\n')
+
+    def get_pdf02(self, html_code, title):
+        """  生成pdf
+        :param html_code:
+        :param title:
+        :return:
+        """
+        ip_notice = '<h2>更多学习交流欢迎关注微信公众号：光明顶一号<h2>'
+        html_code += ip_notice
+        options = {
+            # 'page-size': 'A4',       # A4(default), Letter（书信大小）, A0，A1,B1，etc（等等）.
+            'page-size': 'Letter',
+            'margin-top': '0.75in',
+            'margin-right': '0.75in',
+            'margin-bottom': '0.75in',
+            'margin-left': '0.75in',
+            'minimum-font-size': '30',   # 页面字体大小
+            'encoding': "UTF-8"  # 设定生成pdf文件为utf-8编码，避免生成pdf中文乱码
+
+        }
+        pdf_file_path = os.path.join(self.dir_path_pdf, title + '.pdf')
+        if not os.path.exists(pdf_file_path):
+            column_css = ['column_style.css',]
+            pdfkit.from_string(html_code, pdf_file_path, options=options, css=column_css)
+        pass
+
+    def format_name(self, file_name):
+        file_name = file_name.replace(' ', '').replace('|', '-'). \
+            replace('：', '').replace(':', '-').replace('/', '').replace('"', '').\
+            replace('=', '').replace('?', '').replace('>', '').replace('<', '').replace('/', '').replace('*', '').strip()
+        return file_name
 
 
 class MainWindow(wx.Frame):
@@ -303,7 +340,7 @@ class MainWindow(wx.Frame):
                 alerm.ShowModal()
             else:
                 self.logger.SetValue('')  # 清空下载日志区
-                t = Thread(target=TestThread, args=(url, dir_path, is_choice))
+                t = Thread(target=ChatDown, args=(url, dir_path, is_choice))
                 t.setDaemon(True)
                 t.start()
         else:
@@ -340,7 +377,7 @@ class MainWindow(wx.Frame):
 
     def edit_cookie(self, e):
         path = './static/cookie.json'
-        win32api.ShellExecute(0, 'open', 'notepad.exe', path, '', 1)
+        # win32api.ShellExecute(0, 'open', 'notepad.exe', path, '', 1)
 
 
 class AboutDlg(wx.Frame):
