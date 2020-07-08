@@ -15,32 +15,41 @@ import pdfkit
 import time
 # import win32api
 headers = {
-    # 'User-Agent': "Mozilla/5.0 (iPhone; CPU iPhone OS 11_0 like Mac OS X) AppleWebKit/604.1.38 (KHTML, like Gecko) Version/11.0 Mobile/15A372 Safari/604.1",
     'User-Agent': "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36",
     'Connection': 'keep-alive'
 }
 
 
-class ChatDown:
-    def __init__(self, login_url, dir_path, is_choice):
+class ChatDown:    # 专栏下载类 入口
+    def __init__(self, column_url, dir_path, is_choice):
         # 线程实例化时立即启动
         # self.thread = thread
-        self.login_url = login_url
+        self.column_url = column_url
         self.dir_path = dir_path
         self.is_choice = is_choice
+        self.cookies = ''
         self.run()
+
+    def down_log(self, mes: str):
+        """   下载日志，用于给 ui 界面发送下载的实时信息，此函数可避免代码冗余以及后期易维护
+        :param mes: 发给ui界面的下载更新信息
+        :return:
+        """
+        wx.CallAfter(pub.sendMessage, "update", message=mes + '\n')
+        return ''
 
     def run(self):
         match_path = re.findall('\\$', self.dir_path)
         if not match_path:           # 判断是输入的文件存放路径的末尾是否加反斜杠
             self.dir_path = self.dir_path + '/'
-        # 线程执行的代码
-        # for i in range(11):
+
         with open('./static/cookie.json', 'r') as f:      # 读取配置的cookie文件
             self.cookies = json.load(f)
             print(self.cookies)
 
-        r = requests.get(self.login_url, cookies=self.cookies, headers=headers).content
+        # 2.获取专栏的主页目录数据list
+
+        r = requests.get(self.column_url, cookies=self.cookies, headers=headers).content
         content = etree.HTML(r)
         article_list = content.xpath('//div[ @class="column_categorys"]/a/@onclick')
         chapter_name_list = content.xpath('//div[@class="column_categorys"]/a/div[2]/div/h2/text()')
@@ -54,65 +63,71 @@ class ChatDown:
         self.chapter_title = self.format_name(self.chapter_title)
         if not os.path.exists(self.dir_path_title):
             os.makedirs(self.dir_path_title)
-        # u1 = self.login_url.split('/')[-1]  # 拼接每个章节url
+
+        # 3、遍历专栏所有的章节，进行数据的提取
+
+        resource_index = 1   # 目录页章节排列索引序号
         for u in article_list:
-            # u2 = re.findall('clickOnTopic\(\'(.+)\'', u)[0]
             url_info = re.findall(
                 r"clickOnTopic\(\'(?P<blog>.+)\',\'(?P<directory>.+)\',\'(?P<is_free>.+)\',\'(?P<is_done>.+)\'\)", u)[0]
-            a_url = 'https://gitbook.cn/gitchat/column/' + url_info[1] + '/topic/' + url_info[0]
-            print(a_url)
-            wx.CallAfter(pub.sendMessage, "update", message=a_url + '\n')
+            # 上面是使用正则匹配出该章节的配置信息，例如：是否免费、是否完结、 然后拼接出该章节的目标网页url
+            chapter_url = 'https://gitbook.cn/gitchat/column/' + url_info[1] + '/topic/' + url_info[0]
+            print(chapter_url)
+            self.down_log(chapter_url)
+
             is_free = url_info[2]
             is_done = url_info[3]
             if is_done:
                 if self.is_choice == 0:       # 说明下载pdf
-                    self.get_pdf(a_url)
+                    self.get_pdf(chapter_url)
                 elif self.is_choice == 1:        # 说明下载md
-                    self.get_md(a_url)
+                    self.get_md(chapter_url, resource_index)
                 elif self.is_choice == 2:             # 说明同时下载md和pdf
-                    self.get_pdf(a_url)
-                    # wx.CallAfter(pub.sendMessage, "update", message='开始下载markdown格式...' + '\n')
-                    self.get_md(a_url)
+                    self.get_pdf(chapter_url)
+                    self.get_md(chapter_url, resource_index)
             else:
-                is_done_message = '*** %s ***文章正在写作中...'
+                is_done_message = f'*** {chapter_url} ***文章正在写作中...'
                 wx.CallAfter(pub.sendMessage, "update", message=is_done_message + '\n')
 
-        wx.CallAfter(pub.sendMessage, "update", message='***下载完毕，如果章节不全的话，请添加cookie以及购买相关课程***')
+        self.down_log('***下载完毕，如果章节不全的话，请添加cookie以及购买相关课程***')
 
-    def get_md(self, a_url):
-        """获取到博客文章的内容部分的html代码"""
+    def get_md(self, chapter_url: str, chapter_index: int):
+        """   获取到博客文章的内容部分的html代码
+        :param chapter_url:
+        :param chapter_index:
+        :return:
+        """
         self.dir_path_md = self.dir_path + self.chapter_title + '/' + 'markdown格式'
         if not os.path.exists(self.dir_path_md):
             os.makedirs(self.dir_path_md)
 
-        r = requests.get(a_url, cookies=self.cookies, headers=headers).text
-        # print(r)
+        chapter_content = requests.get(chapter_url, cookies=self.cookies, headers=headers).text
+        soup = BeautifulSoup(chapter_content, 'lxml')
+        content = soup.find_all('div', class_='topic_content')   # 获取到章节中写作内容
 
-        soup = BeautifulSoup(r, 'lxml')
-        content = soup.find_all('div', class_='topic_content')
-        # print(f"{content}")
-        # time.sleep(20)
         if content:
             content = content[0]
             html_code = str(content)
 
-            title = str(soup.title.string).replace(' ', '').replace('|', '-')
+            # title = str(soup.title.string).replace(' ', '').replace('|', '-')
+            title = self.numbers_sort(chapter_index) + '--' + self.format_name(str(soup.title.string))       # 格式化文件标题
             # print(title)
             title_message = '*** %s ***markdown格式开始下载' % title
             wx.CallAfter(pub.sendMessage, "update", message=title_message + '\n')
-            self.change_md(html_code, title)
+            self.html_to_md(html_code, title)
 
         else:
-            wx.CallAfter(pub.sendMessage, "update", message='!!!此章节付费章节，请购买后在下载...' + '\n')
+            self.down_log('!!!此章节未购买，或者是解析错误！')
 
-    # html = open("article.html").read().encode('utf8')
+    def html_to_md(self, html_code: str, title: str):
+        """  html内容转markdown格式  python库：html2text
+        :param html_code:  文章的html字符串内容
+        :param title:  文件章节名称
+        :return:
+        """
 
-    def change_md(self, txt, title):
-        """html代码转markdown"""
-        ht = html2text.HTML2Text()
-        htmlpage = txt
-        text = html2text.html2text(htmlpage)
-        # print(text)
+        text = html2text.html2text(html_code)
+
         try:
             if os.path.exists(self.dir_path_md + '/' + title + '.md'):       # 判断文件是否存在
                 success_already = '*** %s ***已存在、markdown格式下载完毕' % title
@@ -162,7 +177,7 @@ class ChatDown:
         :param title:
         :return:
         """
-        ip_notice = '<h2>更多学习交流欢迎关注微信公众号：光明顶一号<h2>'
+        ip_notice = ''   # 可以添加自己的logo语言
         html_code += ip_notice
         options = {
             # 'page-size': 'A4',       # A4(default), Letter（书信大小）, A0，A1,B1，etc（等等）.
@@ -182,10 +197,23 @@ class ChatDown:
         pass
 
     def format_name(self, file_name):
-        file_name = file_name.replace(' ', '').replace('|', '-'). \
-            replace('：', '').replace(':', '-').replace('/', '').replace('"', '').\
-            replace('=', '').replace('?', '').replace('>', '').replace('<', '').replace('/', '').replace('*', '').strip()
+        file_name = re.sub('[\/:*?"<>|]', '-', file_name)
         return file_name
+
+    def numbers_sort(self, num):
+        if num:
+            num = int(num)
+            if num < 10:
+                num = '00' + str(num)
+            elif num < 100:
+                num = '0' + str(num)
+            else:
+                num = str(num)
+        else:
+            num = '0'
+        return num
+
+
 
 
 class MainWindow(wx.Frame):

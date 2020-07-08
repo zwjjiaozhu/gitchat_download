@@ -1,0 +1,5 @@
+wxptyhon==4.1.0
+bs4==4.9.1
+html2text
+lxml
+pdfkit

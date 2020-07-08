@@ -3,12 +3,21 @@
 # gitchat_download利器
 gitchat文章下载器，支持下载pdf格式以及markdown格式。
 
-其中支持免费的课程下载，付费的课程需要自己购买后，在软件添加cookie后才可以下载
+其中支持免费的课程下载，付费的课程需要自己购买后，在软件添加cookie后才可以下载——————2020.7.8号更新——————————
+
+旧版是采用window系统进行开发的，由于现在切换到mac下进行开发了，所以下面的教程会以 Mac 下进行操作，其中项目代码中我会注释那些是window 下的，那些是 Mac 下的。
 
 #### 软件架构
-- python爬虫技术
+
+- python爬虫
 - wxpython GUI开发界面
 - aria2 开源下载利器
+
+#### 开发平台
+
+- os：Mac os 10.15
+- python version：python3.8
+- wxpython
 
 
 ##### 1.1添加cookie
