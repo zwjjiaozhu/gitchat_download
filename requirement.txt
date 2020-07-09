@@ -1,0 +1,5 @@
+wxpython
+bs4
+html2text
+lxml
+pdfkit
