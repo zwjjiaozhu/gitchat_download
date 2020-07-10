@@ -7,8 +7,6 @@ gitchat文章下载器，支持下载pdf格式以及markdown格式。
 
 旧版是采用window系统进行开发的，由于现在切换到mac下进行开发了，所以下面的教程会以 Mac 下进行操作，其中项目代码中我会注释那些是window 下的，那些是 Mac 下的。
 
-
-<iframe src="//player.bilibili.com/player.html?aid=668763519&bvid=BV1Xa4y1h7g9&cid=210919160&page=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true"> </iframe>
 #### 软件架构
 
 - python爬虫
