@@ -435,6 +435,7 @@ class MainWindow(wx.Frame):
             win32api.ShellExecute(0, 'open', 'notepad.exe', path, '', 1)
         else:
             pass
+        print("mac下手动打开哈！")
 
         # mac os下
 
