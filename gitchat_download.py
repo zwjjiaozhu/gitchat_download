@@ -1,5 +1,6 @@
 import wx
 import os
+import subprocess
 from threading import Thread
 # import wx.lib.pubsub.pub
 from wx.lib.pubsub import pub
@@ -12,7 +13,7 @@ import json
 import wx.html
 import re
 import pdfkit
-import time
+import sys
 # import win32api
 headers = {
     'User-Agent': "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36",
@@ -147,7 +148,7 @@ class ChatDown:    # 专栏下载类 入口
             self.down_log(f'{title}:下载出错了，错误为：{e}')
 
     def get_pdf(self, html_code, title):
-        """  html转pdf  生成pdf，这里使用的库是 pdfkit 基于本地 wxhtmlpdf 程序
+        """  html转pdf  生成pdf，这里使用的库是 pdfkit 基于本地 wkhtmltopdf 程序
         :param html_code:
         :param title:
         :return:
@@ -168,15 +169,36 @@ class ChatDown:    # 专栏下载类 入口
             'encoding': "UTF-8"  # 设置为utf-8编码，避免生成pdf中文乱码
 
         }
+        options_str = ''
+        for each in options:
+            options_str += f"--{each} {options[each]} "
         pdf_file_path = os.path.join(self.pdf_dir_path, title + '.pdf')
-        if not os.path.exists(pdf_file_path):
-            column_css = ['column_style.css', ]
-            ip_notice = '开发者个人博客：http://zwjjiaozhu.top'  # 可以添加自己的ip语言
-            html_code += ip_notice
-            pdfkit.from_string(html_code, pdf_file_path, options=options, css=column_css)
-            self.down_log(f'{title}：pdf格式下载完毕')
-        else:
-            self.down_log(f'{title}：pdf格式已存在')
+        try:
+            if not os.path.exists(pdf_file_path):
+                column_style_file_path = os.path.join(os.getcwd(), 'static', 'column_style.css')
+                column_css = [column_style_file_path, ]
+                html_code += '博客：http://zwjjiaozhu.top'  # 可以添加自己的ip
+
+                # pdfkit在mac下有点问题，打包后的软件总是提示找不到wxhtmltopdf的程序，然后直接pycharm运行就没问题！
+                wkthmltopdf_file_path = os.path.join(os.getcwd(), 'static', 'wkhtmltopdf')
+                # if sys.platform == 'win32':
+                #     wkthmltopdf_file_path = subprocess.Popen(
+                #         ['where', 'wkhtmltopdf'], stdout=subprocess.PIPE).communicate()[0].strip()
+                # else:
+                #     wkthmltopdf_file_path = subprocess.Popen(
+                #         ['which', 'wkhtmltopdf'], stdout=subprocess.PIPE).communicate()[0].strip()
+                # self.down_log(wkthmltopdf_file_path)
+                if not wkthmltopdf_file_path:
+                    self.down_log(f"{title}: 转换pdf失败，原因：未检测到wkhtmltopdf程序，"
+                                  f"请到以下网址进行下载安装：https://wkhtmltopdf.org/downloads.html")
+                    return ''
+                config = pdfkit.configuration(wkhtmltopdf=wkthmltopdf_file_path)
+                pdfkit.from_string(html_code, pdf_file_path, options=options, css=column_css, configuration=config)
+                self.down_log(f'{title}：pdf格式下载完毕')
+            else:
+                self.down_log(f'{title}：pdf格式已存在')
+        except Exception as e:
+            self.down_log(str(e))
 
     def get_original_pdf(self, a_url):
         """  获取专栏中自带的官方pdf文件（旧版），目前gitchat已不在支持pdf观看了！
@@ -407,8 +429,12 @@ class MainWindow(wx.Frame):
         :return:
         """
         path = 'static/cookie.json'
-        # window用户：需取消以下注释，就可以在软件直接打开和编辑
-        # win32api.ShellExecute(0, 'open', 'notepad.exe', path, '', 1)
+        # window用户：就可以在软件直接打开和编辑
+        if sys.platform == 'win32':
+            import win32api
+            win32api.ShellExecute(0, 'open', 'notepad.exe', path, '', 1)
+        else:
+            pass
 
         # mac os下
 
@@ -421,7 +447,7 @@ class WxHTML(wx.html.HtmlWindow):
 class AboutDlg(wx.Frame):
 
     def __init__(self, parent):
-        wx.Frame.__init__(self, parent, wx.ID_ANY, title="关于我...", size=(400, 400))
+        wx.Frame.__init__(self, parent, wx.ID_ANY, title="关于本软件", size=(400, 400))
         self.icon = wx.Icon(name="./static/logo.ico", type=wx.BITMAP_TYPE_ICO)
         self.SetIcon(self.icon)
         html = WxHTML(self)
@@ -429,6 +455,7 @@ class AboutDlg(wx.Frame):
         html.SetPage(
             ''
             "<h3>关于本软件</h3>"
+            "<h3>软件版本：6.2.0</h3>"
             "<p><b>开发者：西园公子 </b></p>"
             "<p><b>个人博客：<a href='http://zwjjiaozhu.top' target='_blank'>http://zwjjiaozhu.top</a> 记录点滴技术积累</b></p>"
             '<p>代码开源，欢迎star：<b><a href="https://github.com/jz46/gitchat_download">⭐github⭐</a></b></p>'
