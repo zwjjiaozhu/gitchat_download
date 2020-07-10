@@ -432,6 +432,7 @@ class AboutDlg(wx.Frame):
             "<p><b>开发者：西园公子 </b></p>"
             "<p><b>个人博客：<a href='http://zwjjiaozhu.top' target='_blank'>http://zwjjiaozhu.top</a> 记录点滴技术积累</b></p>"
             '<p>代码开源，欢迎star：<b><a href="https://github.com/jz46/gitchat_download">⭐github⭐</a></b></p>'
+            '<p><b>版权声明：软件仅供学习所用，勿做其他，带来的所有问题均与软件无关！</b></p>'
         )
 
 
