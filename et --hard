@@ -1,0 +1,257 @@
+[33mcommit ec5e09cf64cd292d1ded9c9d87723d485a8dc42b[m[33m ([m[1;36mHEAD -> [m[1;32mmaster[m[33m, [m[1;31morigin/master[m[33m, [m[1;31morigin/HEAD[m[33m)[m
+Author: 西园公子 <34623422+zwjjiaozhu@users.noreply.github.com>
+Date:   Sat Jul 11 08:43:23 2020 +0800
+
+    Delete cookie.json
+
+[33mcommit e7c39220a996801f5c77fec151e3fbdb2385c584[m
+Author: 西园公子 <34623422+zwjjiaozhu@users.noreply.github.com>
+Date:   Sat Jul 11 08:42:13 2020 +0800
+
+    Update cookie.json
+
+[33mcommit f947af13e022303711d555e3d1664bfe6f95759b[m
+Author: zhangwuji <zhangwuji138215292@163.com>
+Date:   Fri Jul 10 17:21:30 2020 +0800
+
+    更新
+
+[33mcommit 1fb4856b9602b0005e64636a10b2913a06f48dd6[m
+Merge: eb3c1ae 0f2eaa0
+Author: zhangwuji <zhangwuji138215292@163.com>
+Date:   Fri Jul 10 17:20:06 2020 +0800
+
+    Merge remote-tracking branch 'origin/master'
+
+[33mcommit eb3c1ae37399e67f7ba2c47bac4e324583224d36[m
+Author: zhangwuji <zhangwuji138215292@163.com>
+Date:   Fri Jul 10 17:19:52 2020 +0800
+
+    修复
+
+[33mcommit 0f2eaa055fbe5cecb4a3c5eb197742441507fae7[m
+Author: 西园公子 <34623422+zwjjiaozhu@users.noreply.github.com>
+Date:   Fri Jul 10 17:18:56 2020 +0800
+
+    Update README.md
+
+[33mcommit f8c30a6ec367063606ec7a95e925504cac0f6719[m
+Author: 西园公子 <34623422+zwjjiaozhu@users.noreply.github.com>
+Date:   Fri Jul 10 17:18:44 2020 +0800
+
+    Update README.md
+
+[33mcommit e95fbb52260314ba2934a1a6d801afcb97100b4d[m
+Author: zhangwuji <zhangwuji138215292@163.com>
+Date:   Fri Jul 10 16:25:04 2020 +0800
+
+    修复mac下app不能调用wkhtmlpdf合成pdf的错误
+
+[33mcommit 10be0826a5dcdb07e58f94cb3aa5c61946fcd4b0[m
+Author: zwjjiaozhu <zhangwuji138215292@163.com>
+Date:   Fri Jul 10 10:21:21 2020 +0800
+
+    更新若若干说明
+
+[33mcommit 0c83dac194393baadd75a015eb2cb255f4ba6b24[m[33m ([m[1;33mtag: 6.2.0[m[33m)[m
+Author: zhangwuji <zhangwuji138215292@163.com>
+Date:   Thu Jul 9 22:39:33 2020 +0800
+
+    mac 重新更新了一下代码和注释，更易阅读和理解
+
+[33mcommit 1e324882a64e8c73228275bc45b18d43fb59d29d[m
+Merge: 59a5276 d844af5
+Author: zhangwuji <zhangwuji138215292@163.com>
+Date:   Thu Jul 9 22:38:36 2020 +0800
+
+    Merge remote-tracking branch 'origin/master'
+
+[33mcommit 59a52769b1dfdd1657227775d50b379fc43ce363[m
+Author: zhangwuji <zhangwuji138215292@163.com>
+Date:   Thu Jul 9 22:37:55 2020 +0800
+
+    mac 重新更新了一下代码和注释，更易阅读和理解
+
+[33mcommit d844af5cfcf8439d55bea4dbff32c9a0802f32a6[m
+Author: 教主 <34623422+jz46@users.noreply.github.com>
+Date:   Thu Jul 9 22:01:10 2020 +0800
+
+    Create FUNDING.yml
+    
+    来杯星巴克？
+
+[33mcommit 975ce33f3774793c31d39bc52245ef9ffd1bc4f7[m
+Author: zhangwuji <zhangwuji138215292@163.com>
+Date:   Wed Jul 8 21:59:00 2020 +0800
+
+    更新若干代下载功能以及代码注释
+
+[33mcommit f0cb9f5db436713b0b5bb3ef0a4c5aaab46f3ed3[m
+Author: zhangwuji <zhangwuji138215292@163.com>
+Date:   Tue Jul 7 22:23:33 2020 +0800
+
+    已修复gitchat解析错误问题
+
+[33mcommit 1a4bac617ba6f51d9b8fe9036693b37b25259498[m
+Author: zhangwuji <zhangwuji138215292@163.com>
+Date:   Tue Jul 7 22:21:00 2020 +0800
+
+    已修复gitchat解析错误问题
+
+[33mcommit 3f726a5c3ef85522bbeb282d95425c1eabe2d070[m[33m ([m[1;33mtag: 1.0[m[33m)[m
+Author: 教主 <34623422+jz46@users.noreply.github.com>
+Date:   Sat Apr 27 10:56:02 2019 +0800
+
+    Update gitchat_download.py
+
+[33mcommit f49f8ccd4b5dab11d131a3c218ce0f955be7c680[m
+Author: 教主 <34623422+jz46@users.noreply.github.com>
+Date:   Sat Jan 26 13:53:51 2019 +0800
+
+    gitchat_download4.2
+    
+    gitchat_download4.2
+
+[33mcommit 2a571c02f72c73689bab632cbaf29b6a54c8e511[m
+Author: 教主 <34623422+jz46@users.noreply.github.com>
+Date:   Sat Jan 26 13:50:29 2019 +0800
+
+    Create gitchat_download.py
+    
+    上传软件python源码
+
+[33mcommit 062fb9d74bf4b3387ca705a9ad243d30d0c1a4b0[m
+Author: 教主 <34623422+jz46@users.noreply.github.com>
+Date:   Sat Jan 26 13:17:44 2019 +0800
+
+    Update README.md
+
+[33mcommit 2f021b0c177984515f8472a75801556ad828a7d6[m
+Author: 教主 <34623422+jz46@users.noreply.github.com>
+Date:   Sat Jan 26 12:14:08 2019 +0800
+
+    Update README.md
+
+[33mcommit 33e99411cfd119ef8b9f5923f678f10c8dba90ba[m
+Author: 教主 <34623422+jz46@users.noreply.github.com>
+Date:   Sat Jan 26 12:13:17 2019 +0800
+
+    Update README.md
+
+[33mcommit 5303c89364b82429b0584f6d28ae86fa4f2c0c56[m
+Author: 教主 <34623422+jz46@users.noreply.github.com>
+Date:   Sat Jan 26 12:12:02 2019 +0800
+
+    Update README.md
+    
+    更新使用教程
+
+[33mcommit 64c91cfa17ccb9b9139f4c142d777a9f29b104de[m
+Author: 教主 <34623422+jz46@users.noreply.github.com>
+Date:   Sat Jan 26 12:10:57 2019 +0800
+
+    Update README.md
+
+[33mcommit 73eb370822b3febd3e6acf2f7836fc7b46df9471[m
+Author: 教主 <34623422+jz46@users.noreply.github.com>
+Date:   Sat Jan 26 12:08:22 2019 +0800
+
+    Update README.md
+
+[33mcommit 745a9d556749917fd987d3af790fab17624ea227[m
+Author: 教主 <34623422+jz46@users.noreply.github.com>
+Date:   Sat Jan 26 12:05:40 2019 +0800
+
+    Update README.md
+
+[33mcommit 5b15921c91c43bbbd6b8898cf140cd26ded07ee3[m
+Author: 教主 <34623422+jz46@users.noreply.github.com>
+Date:   Sat Jan 26 12:02:55 2019 +0800
+
+    update gitchat_download4.0.1
+    
+    优化界面，以及添加使用记事本编辑cookie的功能
+
+[33mcommit 5f7ecc84f5f3e4afedf9a212bda8844e43c04279[m
+Author: 教主 <34623422+jz46@users.noreply.github.com>
+Date:   Sat Jan 26 11:55:06 2019 +0800
+
+    Delete shima
+
+[33mcommit d969954dec95dd6108c667805cfe38f61ff9e52b[m
+Author: 教主 <34623422+jz46@users.noreply.github.com>
+Date:   Sat Jan 26 11:14:50 2019 +0800
+
+    Update README.md
+
+[33mcommit 7d4a39f547f090ddffd16cb372b793aac5eae530[m
+Author: 教主 <34623422+jz46@users.noreply.github.com>
+Date:   Sat Jan 26 10:56:11 2019 +0800
+
+    Update README.md
+
+[33mcommit e4a2afb8583f89b4f6ac6d68ed0be4c04214fb3e[m
+Author: 教主 <34623422+jz46@users.noreply.github.com>
+Date:   Sat Jan 26 10:55:28 2019 +0800
+
+    Update README.md
+
+[33mcommit 7e7a5604b7fac349552e0bf9208ed5e31a9c0ad4[m
+Author: 教主 <34623422+jz46@users.noreply.github.com>
+Date:   Sat Jan 26 10:52:05 2019 +0800
+
+    Update README.md
+
+[33mcommit 902b13fc847ee72bf27a0119fff59fb191dfa228[m
+Author: 教主 <34623422+jz46@users.noreply.github.com>
+Date:   Sat Jan 26 10:47:30 2019 +0800
+
+    Update README.md
+
+[33mcommit 77e0f0d424b6436765ab1ab8b4cba5e12606ecf8[m
+Author: 教主 <34623422+jz46@users.noreply.github.com>
+Date:   Sat Jan 26 10:00:07 2019 +0800
+
+    Delete info
+
+[33mcommit 30997689566db84a982bd6b457a35cbbf12826fa[m
+Author: 教主 <34623422+jz46@users.noreply.github.com>
+Date:   Sat Jan 26 09:59:05 2019 +0800
+
+    demo3.0
+    
+    优化自定义下载格式，pdf和markdown格式下载
+
+[33mcommit 55edce3c17b1ca0414ccfd2516525428956fed39[m
+Author: 教主 <34623422+jz46@users.noreply.github.com>
+Date:   Sat Jan 26 09:58:10 2019 +0800
+
+    Set theme jekyll-theme-merlot
+
+[33mcommit bb9e81f3cb5f4f87aa9314c8b87b4177f7995576[m
+Author: 教主 <34623422+jz46@users.noreply.github.com>
+Date:   Fri Jan 25 19:27:38 2019 +0800
+
+    Create shima
+
+[33mcommit 016be270f9b816fa4243b68f0c25dca5de99f2da[m
+Author: 教主 <34623422+jz46@users.noreply.github.com>
+Date:   Fri Jan 25 19:11:09 2019 +0800
+
+    Create info
+    
+    exe安装包上传
+
+[33mcommit 8c418108be4b88616d4cb84c2989ddcc9b12ec77[m
+Author: 教主 <34623422+jz46@users.noreply.github.com>
+Date:   Fri Jan 25 09:53:55 2019 +0800
+
+    Update README.md
+    
+    更新readme的内容
+
+[33mcommit 628317647c30df75f3fd79a9177f9575e28c9ebb[m
+Author: 教主 <34623422+jz46@users.noreply.github.com>
+Date:   Fri Jan 25 09:48:44 2019 +0800
+
+    Initial commit
